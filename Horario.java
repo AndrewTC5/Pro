@@ -1,28 +1,33 @@
 package Pro;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class Horario {
     private String horaEntrada;
     private String horaSalida;
 
     // Constructor
     public Horario(String horaEntrada, String horaSalida) {
-        this.horaEntrada = horaEntrada;
-        this.horaSalida = horaSalida;
+        this.setHoraEntrada(horaEntrada);
+        this.setHoraSalida(horaSalida);
     }
 
     public String getHoraEntrada() {
         return horaEntrada;
     }
 
+    public void setHoraEntrada(String horaEntrada) {
+        this.horaEntrada = horaEntrada;
+    }
+
     public String getHoraSalida() {
         return horaSalida;
     }
 
+    public void setHoraSalida(String horaSalida) {
+        this.horaSalida = horaSalida;
+    }
+
     @Override
     public String toString() {
-        return "Entrada: " + horaEntrada + " - Salida: " + horaSalida;
+        return "Entrada: " + getHoraEntrada() + " - Salida: " + getHoraSalida();
     }
 }
