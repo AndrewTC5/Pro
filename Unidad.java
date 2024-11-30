@@ -76,12 +76,4 @@ public class Unidad {
                 "\nNumero de Pasajeros en " + getLugarActual().getNombre() + ": "+ getPasajeros().size() +
                 "\nPasaje total: " + sumaPasajes;
     }
-    public String mostrarInfoLabel() {
-        int sumaPasajes = 8* getPasajeros().size();
-        return "Unidad #" + getNumero() + " - Matricula: " + getMatricula()
-                + "\nLugar Actual: " + getLugarActual().getNombre() +
-                "\nHorario: " + getHorario() +
-                "\nNumero de Pasajeros en " + getLugarActual().getNombre() + ": "+ getPasajeros().size() +
-                "\nPasaje total: " + sumaPasajes;
-    }
 }

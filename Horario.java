@@ -28,6 +28,6 @@ public class Horario {
 
     @Override
     public String toString() {
-        return "Entrada: " + getHoraEntrada() + " - Salida: " + getHoraSalida();
+        return "Empezó Recorrido: " + getHoraEntrada() + " - Terminó Recorrido: " + getHoraSalida();
     }
 }

@@ -6,12 +6,12 @@ import java.awt.event.ActionListener;
 import java.util.*;
 
 public class vistaRecorrido extends JFrame {
-    private JPanel panel1;
+    private JPanel panelPrincipal;
     private JTextField tfNumUnidad;
     private JTextField tfMatricula;
     private JTextArea taLista;
     private JButton bSimular;
-    private JButton bAgregar;
+    private JButton bVerMapa;
     private JButton verListaDeUnidadesButton;
 
     public static void main(String[] args) {
@@ -26,7 +26,6 @@ public class vistaRecorrido extends JFrame {
 
 
     public vistaRecorrido() {
-
         Stack<Lugar>lugares = new Stack<>();
         for (int i =1; i<=10; i++){
             lugares.push(new Lugar("Parada " + i));
@@ -43,11 +42,7 @@ public class vistaRecorrido extends JFrame {
         Queue<Unidad> unidades = new LinkedList<>();
         List<Pasajero> pasajeros = new ArrayList<>();
 
-        int numUnidad=0;
-        String matricula="";
-        Unidad unidad = new Unidad(numUnidad, matricula);
-
-        add(panel1);
+        add(panelPrincipal);
 
 
         verListaDeUnidadesButton.addActionListener(new ActionListener() {
@@ -79,27 +74,30 @@ public class vistaRecorrido extends JFrame {
         });
 
 
-        bAgregar.addActionListener(new ActionListener() {
+        bVerMapa.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Mapa mapa = new Mapa();
-                mapa.pack();
-                mapa.setLocationRelativeTo(null);
-                mapa.setVisible(true);
+                MapaDialog mapaDialog = new MapaDialog(unidades);
+                mapaDialog.setVisible(true);
             }
         });
     }
 
     private static void seleccionarLugar(Stack<Lugar> lugares, Unidad unidad) {
-        int index = 0;
-        int indiceLugar;
-        for (Lugar lugar : lugares) {
-            JOptionPane.showMessageDialog(null, index++ + ". " + lugar.getNombre());
+        int index = 1;
+        StringBuilder lugaresC = new StringBuilder("Lugares Disponibles: \n");
+
+        for (Lugar lugar : lugares){
+            lugaresC.append(index).append(": ").append(lugar.toString()).append("\n");
+            index++;
         }
+        JOptionPane.showMessageDialog(null, lugaresC.toString());
+        int indiceLugar;
+
 
         indiceLugar = Byte.parseByte(JOptionPane.showInputDialog(null, "Ingrese el lugar de la Unidad"));
         if (indiceLugar >= 0 && indiceLugar < lugares.size()) {
-            Lugar lugarSeleccionado = lugares.get(indiceLugar);
+            Lugar lugarSeleccionado = lugares.get(indiceLugar-1);
             unidad.asignarLugar(lugarSeleccionado);
             JOptionPane.showMessageDialog(null,"Lugar asignado.");
         } else {
@@ -108,20 +106,19 @@ public class vistaRecorrido extends JFrame {
     }
 
     private static void seleccionarHorario(Queue<Horario> horarios, Unidad unidad) {
-        JOptionPane.showMessageDialog(null, "Horarios disponibles:");
-        int index = 0;
+        StringBuilder horariosString = new StringBuilder("Horarios disponibles:\n");
+        int index = 1; // Inicializar el índice
         for (Horario horario : horarios) {
-            JOptionPane.showMessageDialog(null, index++ + ". " + horario);
+            horariosString.append(index).append(": ").append(horario.toString()).append("\n");
+            index++; // Incrementar el índice
         }
-        int indiceHorario = Byte.parseByte(JOptionPane.showInputDialog(null, "Ingrese el horario de la unidad"));
-        if (indiceHorario >= 0 && indiceHorario < horarios.size()) {
+
+        JOptionPane.showMessageDialog(null, horariosString.toString(), "Lista de Horarios", JOptionPane.INFORMATION_MESSAGE);
+
             // Usamos poll() para obtener y eliminar el primer elemento de la cola
             Horario horarioSeleccionado = horarios.poll();
             unidad.asignarHorario(horarioSeleccionado);
-            JOptionPane.showMessageDialog(null, "Horario asignado.");
-        } else {
-            JOptionPane.showMessageDialog(null,"Índice de horario no válido.");
-        }
+            JOptionPane.showMessageDialog(null, "Horario asignado: " + horarioSeleccionado);
     }
 
     private static void agregarPasajeros(List<Pasajero> pasajeros, Unidad unidad) {
@@ -130,11 +127,9 @@ public class vistaRecorrido extends JFrame {
         if (respuesta.equalsIgnoreCase("Si")){
             while (true){
                 String persona= JOptionPane.showInputDialog("Introduce el nombre del pasajero\n(Si desea Finalizar la Tarea escriba 'TERMINAR')");
-
                 pasajeros.add(new Pasajero(persona));
                 String listaPersonas= String.valueOf(pasajeros.add(new Pasajero(persona)));
                 unidad.agregarPasajero(listaPersonas);
-
                 if (persona.equalsIgnoreCase("TERMINAR")){
                     break;
                 }
